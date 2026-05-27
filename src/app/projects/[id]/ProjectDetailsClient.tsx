@@ -44,15 +44,15 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
           )}
         </AnimatePresence>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0414] via-[#0a0414]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0414] via-[#0a0414]/40 to-transparent z-10 pointer-events-none" />
         
-        <div className="absolute top-8 left-8 z-20">
-          <Link href="/projects" className="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full hover:bg-primary hover:text-black transition-all">
-            <ArrowLeft size={18} /> Back to Projects
+        <div className="absolute top-8 left-8 z-30">
+          <Link href="/projects" className="flex items-center gap-2 bg-black/60 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full hover:bg-primary hover:text-black transition-all shadow-2xl">
+            <ArrowLeft size={20} /> <span className="font-bold">Back</span>
           </Link>
         </div>
 
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 sm:px-6 lg:px-8 z-10 text-center">
+        <div className="absolute bottom-12 left-0 right-0 px-4 sm:px-6 lg:px-8 z-20 text-center">
           <motion.span 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4"
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-2xl"
           >
             {project.title}
           </motion.h1>
@@ -75,8 +75,8 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
             transition={{ delay: 0.2 }}
             className="flex justify-center gap-4 mt-6"
           >
-             <span className={`flex items-center gap-2 px-3 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-bold uppercase tracking-widest ${project.status === 'Completed' ? 'text-green-400' : 'text-primary'}`}>
-                <CheckCircle2 size={14} /> {project.status || 'Active'}
+             <span className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-sm font-bold uppercase tracking-widest ${project.status === 'Completed' ? 'text-green-400' : 'text-primary'}`}>
+                <CheckCircle2 size={16} /> {project.status || 'Active'}
              </span>
           </motion.div>
         </div>
@@ -84,21 +84,22 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
         {/* Fullscreen Trigger */}
         <button 
           onClick={() => setIsFullScreen(true)}
-          className="absolute bottom-8 right-8 p-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full hover:bg-white/10 transition-all text-white/70 hover:text-white"
+          className="absolute bottom-8 right-8 z-30 p-4 bg-primary text-black rounded-full hover:bg-white transition-all shadow-[0_0_20px_rgba(22,163,74,0.4)] active:scale-95 cursor-pointer"
+          aria-label="View Fullscreen"
         >
           <Maximize2 size={24} />
         </button>
 
         {/* Gallery Navigation Controls */}
         {project.images && project.images.length > 1 && (
-          <>
-            <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 p-4 bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm transition-all text-white/50 hover:text-white border border-white/5">
+          <div className="contents md:block">
+            <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-4 bg-black/40 hover:bg-black/60 rounded-full backdrop-blur-md transition-all text-white border border-white/10 active:scale-90">
               <ChevronLeft size={32} />
             </button>
-            <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 p-4 bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm transition-all text-white/50 hover:text-white border border-white/5">
+            <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-4 bg-black/40 hover:bg-black/60 rounded-full backdrop-blur-md transition-all text-white border border-white/10 active:scale-90">
               <ChevronRight size={32} />
             </button>
-          </>
+          </div>
         )}
       </section>
 
@@ -109,12 +110,12 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
           <div className="lg:col-span-2 space-y-12">
             {/* Thumbnail Strip */}
             {project.images && project.images.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+              <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar no-scrollbar touch-pan-x">
                 {project.images.map((img: string, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`flex-shrink-0 w-32 h-20 rounded-xl overflow-hidden border-2 transition-all ${activeImageIndex === idx ? 'border-primary' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                    className={`flex-shrink-0 w-32 h-20 rounded-xl overflow-hidden border-2 transition-all ${activeImageIndex === idx ? 'border-primary' : 'border-white/10 opacity-50'}`}
                   >
                     <img src={img} alt={`${project.title} ${idx + 1}`} className="w-full h-full object-cover" />
                   </button>
@@ -190,42 +191,47 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[200] bg-black flex flex-col overflow-hidden"
           >
-            <div className="sticky top-0 z-[110] flex justify-between items-center p-6 bg-gradient-to-b from-black to-transparent text-white">
-              <span className="text-sm font-mono bg-black/40 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center p-4 md:p-6 z-[220] bg-black/60 backdrop-blur-md border-b border-white/10">
+              <span className="text-sm font-mono text-white/70 bg-white/5 px-3 py-1 rounded-full">
                 {activeImageIndex + 1} / {project.images?.length || 0}
               </span>
-              <button onClick={() => setIsFullScreen(false)} className="p-2 bg-black/40 hover:bg-white/10 rounded-full transition-all backdrop-blur-md border border-white/10">
+              <button 
+                onClick={() => setIsFullScreen(false)} 
+                className="p-2 bg-white/10 hover:bg-primary hover:text-black rounded-full transition-all text-white cursor-pointer"
+              >
                 <X size={32} />
               </button>
             </div>
             
-            <div className="flex-grow flex items-center justify-center relative p-4 min-h-screen">
-               <button 
-                 onClick={(e) => { e.stopPropagation(); prevImage(); }} 
-                 className="fixed left-4 z-[110] p-4 bg-black/40 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white backdrop-blur-md border border-white/10"
-               >
-                 <ChevronLeft size={48} />
-               </button>
-               
-               <div className="w-full max-w-5xl flex justify-center">
+            {/* Modal Content - Scrollable */}
+            <div className="flex-grow overflow-y-auto overflow-x-hidden p-4 md:p-12 flex flex-col items-center">
+               <div className="relative w-full max-w-5xl flex items-center justify-center min-h-full">
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); prevImage(); }} 
+                   className="fixed left-4 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90"
+                 >
+                   <ChevronLeft size={48} />
+                 </button>
+                 
                  <motion.img 
                    key={activeImageIndex}
-                   initial={{ scale: 0.95, opacity: 0 }}
-                   animate={{ scale: 1, opacity: 1 }}
+                   initial={{ opacity: 0, scale: 0.98 }}
+                   animate={{ opacity: 1, scale: 1 }}
                    src={project.images[activeImageIndex]} 
-                   className="w-full h-auto max-h-none object-contain shadow-2xl rounded-lg"
+                   className="w-full h-auto max-w-full shadow-[0_20px_60px_rgba(0,0,0,0.8)] rounded-xl"
                    onClick={(e) => e.stopPropagation()}
                  />
-               </div>
 
-               <button 
-                 onClick={(e) => { e.stopPropagation(); nextImage(); }} 
-                 className="fixed right-4 z-[110] p-4 bg-black/40 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white backdrop-blur-md border border-white/10"
-               >
-                 <ChevronRight size={48} />
-               </button>
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); nextImage(); }} 
+                   className="fixed right-4 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90"
+                 >
+                   <ChevronRight size={48} />
+                 </button>
+               </div>
             </div>
           </motion.div>
         )}
