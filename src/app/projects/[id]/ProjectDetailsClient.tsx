@@ -207,27 +207,27 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
             </div>
             
             {/* Modal Content - Scrollable */}
-            <div className="flex-grow overflow-y-auto overflow-x-hidden p-4 md:p-12 flex flex-col items-center">
-               <div className="relative w-full max-w-5xl flex items-center justify-center min-h-full">
+            <div className="flex-grow overflow-y-auto overflow-x-hidden p-4 md:p-12 scroll-smooth">
+               <div className="relative w-full max-w-5xl mx-auto flex items-start justify-center min-h-full py-8 md:py-12">
                  <button 
                    onClick={(e) => { e.stopPropagation(); prevImage(); }} 
-                   className="fixed left-4 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90"
+                   className="fixed left-4 top-1/2 -translate-y-1/2 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90 hidden md:flex"
                  >
                    <ChevronLeft size={48} />
                  </button>
                  
                  <motion.img 
                    key={activeImageIndex}
-                   initial={{ opacity: 0, scale: 0.98 }}
-                   animate={{ opacity: 1, scale: 1 }}
+                   initial={{ opacity: 0, y: 20 }}
+                   animate={{ opacity: 1, y: 0 }}
                    src={project.images[activeImageIndex]} 
-                   className="w-full h-auto max-w-full shadow-[0_20px_60px_rgba(0,0,0,0.8)] rounded-xl"
+                   className="w-full h-auto max-w-full shadow-[0_20px_80px_rgba(0,0,0,0.9)] rounded-2xl ring-1 ring-white/10"
                    onClick={(e) => e.stopPropagation()}
                  />
 
                  <button 
                    onClick={(e) => { e.stopPropagation(); nextImage(); }} 
-                   className="fixed right-4 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90"
+                   className="fixed right-4 top-1/2 -translate-y-1/2 z-[230] p-4 bg-black/60 hover:bg-primary hover:text-black rounded-full transition-all text-white border border-white/10 backdrop-blur-md active:scale-90 hidden md:flex"
                  >
                    <ChevronRight size={48} />
                  </button>
