@@ -24,18 +24,24 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
   return (
     <div className="min-h-screen bg-[#0a0414] text-white pb-20">
       {/* Hero Section with Active Image */}
-      <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={activeImageIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            src={project.images[activeImageIndex] || "https://www.transparenttextures.com/patterns/cubes.png"}
-            alt={project.title}
-            className="w-full h-full object-cover"
-          />
+      <section className="relative h-[50vh] min-h-[400px] md:h-[80vh] w-full overflow-hidden bg-black/20">
+        <AnimatePresence mode="popLayout">
+          {project.images && project.images.length > 0 ? (
+            <motion.img
+              key={activeImageIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              src={project.images[activeImageIndex]}
+              alt={project.title}
+              className="w-full h-full object-cover relative z-0"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+               <Cpu size={48} className="text-white/10" />
+            </div>
+          )}
         </AnimatePresence>
         
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0414] via-[#0a0414]/20 to-transparent" />
@@ -184,29 +190,40 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex flex-col"
+            className="fixed inset-0 z-[100] bg-black/95 flex flex-col overflow-y-auto"
           >
-            <div className="flex justify-between items-center p-6 text-white">
-              <span className="text-sm font-mono">{activeImageIndex + 1} / {project.images?.length || 0}</span>
-              <button onClick={() => setIsFullScreen(false)} className="p-2 hover:bg-white/10 rounded-full transition-all">
+            <div className="sticky top-0 z-[110] flex justify-between items-center p-6 bg-gradient-to-b from-black to-transparent text-white">
+              <span className="text-sm font-mono bg-black/40 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+                {activeImageIndex + 1} / {project.images?.length || 0}
+              </span>
+              <button onClick={() => setIsFullScreen(false)} className="p-2 bg-black/40 hover:bg-white/10 rounded-full transition-all backdrop-blur-md border border-white/10">
                 <X size={32} />
               </button>
             </div>
             
-            <div className="flex-grow flex items-center justify-center relative p-4">
-               <button onClick={prevImage} className="absolute left-4 p-4 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white">
+            <div className="flex-grow flex items-center justify-center relative p-4 min-h-screen">
+               <button 
+                 onClick={(e) => { e.stopPropagation(); prevImage(); }} 
+                 className="fixed left-4 z-[110] p-4 bg-black/40 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white backdrop-blur-md border border-white/10"
+               >
                  <ChevronLeft size={48} />
                </button>
                
-               <motion.img 
-                 key={activeImageIndex}
-                 initial={{ scale: 0.9, opacity: 0 }}
-                 animate={{ scale: 1, opacity: 1 }}
-                 src={project.images[activeImageIndex]} 
-                 className="max-w-full max-h-full object-contain shadow-2xl"
-               />
+               <div className="w-full max-w-5xl flex justify-center">
+                 <motion.img 
+                   key={activeImageIndex}
+                   initial={{ scale: 0.95, opacity: 0 }}
+                   animate={{ scale: 1, opacity: 1 }}
+                   src={project.images[activeImageIndex]} 
+                   className="w-full h-auto max-h-none object-contain shadow-2xl rounded-lg"
+                   onClick={(e) => e.stopPropagation()}
+                 />
+               </div>
 
-               <button onClick={nextImage} className="absolute right-4 p-4 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white">
+               <button 
+                 onClick={(e) => { e.stopPropagation(); nextImage(); }} 
+                 className="fixed right-4 z-[110] p-4 bg-black/40 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white backdrop-blur-md border border-white/10"
+               >
                  <ChevronRight size={48} />
                </button>
             </div>
