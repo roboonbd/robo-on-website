@@ -52,8 +52,8 @@ export default function Projects() {
     : projects.filter(p => p.category === activeCategory);
 
   return (
-    <div className="w-full flex justify-center pb-32 relative overflow-hidden">
-      <div className="absolute top-40 left-0 -translate-x-1/4 text-primary/5 pointer-events-none -z-10">
+    <div className="w-full flex justify-center pb-32 relative overflow-hidden optimize-scrolling">
+      <div className="absolute top-40 left-0 -translate-x-1/4 text-primary/5 pointer-events-none -z-10 accelerate-gpu">
          <Cpu size={800} strokeWidth={0.5} />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 relative z-10 w-full">

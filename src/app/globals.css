@@ -125,20 +125,34 @@ html {
 @layer utilities {
   .glass {
     background: rgba(15, 15, 15, 0.7);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   .glass-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(10, 10, 10, 0.6) 100%);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
     transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  .accelerate-gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
     will-change: transform;
+  }
+
+  .optimize-scrolling {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
 
   .text-gradient {

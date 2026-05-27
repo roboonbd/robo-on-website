@@ -82,9 +82,9 @@ export default function Home() {
         CUSTOMIZE GAP HERE:
         Change the gap-[1rem] value below to adjust the exact distance between the display and headline on mobile & tablet.
       */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 lg:py-32 flex flex-col-reverse lg:flex-row items-center justify-between gap-[1rem] lg:gap-12">
+      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 lg:py-32 flex flex-col-reverse lg:flex-row items-center justify-between gap-[1rem] lg:gap-12 accelerate-gpu">
         {/* Microcontroller Watermark */}
-        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 text-primary/5 pointer-events-none">
+        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 text-primary/5 pointer-events-none accelerate-gpu">
           <Cpu size={800} strokeWidth={0.5} />
         </div>
 
@@ -165,9 +165,9 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="w-full relative py-20 border-t border-white/10 bg-black/50 overflow-hidden">
+      <section id="services" className="w-full relative py-20 border-t border-white/10 bg-black/50 overflow-hidden accelerate-gpu">
         {/* Network Watermark */}
-        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 text-primary/5 pointer-events-none">
+        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 text-primary/5 pointer-events-none accelerate-gpu">
           <Share2 size={600} strokeWidth={0.5} />
         </div>
 
