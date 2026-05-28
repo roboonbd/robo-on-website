@@ -14,15 +14,20 @@ export default function Home() {
 
   // Programmatic manual play trigger for mobile devices (iOS Safari Friendly)
   useEffect(() => {
-    const playVideo = () => {
+    const playVideo = async () => {
       if (videoRef.current) {
-        videoRef.current.muted = true;
-        videoRef.current.play().catch(() => {});
+        try {
+          videoRef.current.muted = true;
+          await videoRef.current.play();
+        } catch (err) {
+          console.log("Autoplay blocked, waiting for interaction");
+        }
       }
     };
 
-    // Try playing immediately
+    // Try playing immediately and with a slight delay
     playVideo();
+    const timeout = setTimeout(playVideo, 1000);
 
     // Fallback for strict iOS logic: play on first user interaction
     const handleGesture = () => {
@@ -35,6 +40,7 @@ export default function Home() {
     window.addEventListener('click', handleGesture);
 
     return () => {
+      clearTimeout(timeout);
       window.removeEventListener('touchstart', handleGesture);
       window.removeEventListener('click', handleGesture);
     };
@@ -78,11 +84,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* Hero Section */}
-      {/* 
-        CUSTOMIZE GAP HERE:
-        Change the gap-[1rem] value below to adjust the exact distance between the display and headline on mobile & tablet.
-      */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 lg:py-32 flex flex-col-reverse lg:flex-row items-center justify-between gap-[1rem] lg:gap-12 accelerate-gpu">
+      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 lg:py-32 flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12">
         {/* Microcontroller Watermark */}
         <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 text-primary/5 pointer-events-none accelerate-gpu">
           <Cpu size={800} strokeWidth={0.5} />
@@ -137,9 +139,9 @@ export default function Home() {
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center"
+          className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center z-10"
         >
-          <div className="w-full flex items-center justify-center lg:w-[600px] relative">
+          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 rounded-3xl overflow-hidden shadow-2xl">
             <video
               id="hero-video"
               ref={videoRef}
@@ -147,15 +149,11 @@ export default function Home() {
               loop
               muted
               playsInline
+              // @ts-ignore
+              webkit-playsinline="true"
               preload="auto"
-              className="w-full h-auto object-contain origin-center pointer-events-none"
-              style={{ clipPath: 'inset(0% 0% 14% 0%)' }}
-              onCanPlay={() => {
-                if (videoRef.current) {
-                  videoRef.current.muted = true;
-                  videoRef.current.play();
-                }
-              }}
+              className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
+              style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
             >
               <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
               Your browser does not support the video tag.
@@ -165,7 +163,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="w-full relative py-20 border-t border-white/10 bg-black/50 overflow-hidden accelerate-gpu">
+      <section id="services" className="w-full relative py-20 border-t border-white/10 bg-black/50 overflow-hidden">
         {/* Network Watermark */}
         <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 text-primary/5 pointer-events-none accelerate-gpu">
           <Share2 size={600} strokeWidth={0.5} />

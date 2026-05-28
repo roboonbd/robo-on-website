@@ -78,12 +78,16 @@ html {
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
-    cursor: none; /* Hide default cursor */
   }
 
-  /* Ensure clickable elements also have no cursor to let custom cursor handle it */
-  a, button, [role="button"], input, select, textarea {
-    cursor: none !important;
+  /* Only hide cursor on devices that actually use a mouse/pointer */
+  @media (pointer: fine) {
+    body {
+      cursor: none;
+    }
+    a, button, [role="button"], input, select, textarea {
+      cursor: none !important;
+    }
   }
 
   /* Hide Next.js Development Indicator */
