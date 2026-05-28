@@ -239,7 +239,7 @@ export default function Home() {
                 <div className="p-8">
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6">{project.desc}</p>
-                  <Link href={project.id?.startsWith('mock') ? '#' : `/projects/${project.id}`} className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:gap-3 transition-all">
+                  <Link href={project.id?.startsWith('mock') ? '#' : `/projects/project-details/?id=${project.id}`} className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:gap-3 transition-all">
                     View Project Detail <ArrowRight size={16} />
                   </Link>
                 </div>

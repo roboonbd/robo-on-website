@@ -132,7 +132,7 @@ export default function Projects() {
                   </div>
 
                   {/* Project Details */}
-                  <Link href={`/projects/${project.id}`} className="p-8 flex-grow flex flex-col relative z-20 -mt-6 bg-[#0a0414]/90 backdrop-blur-xl rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.5)] group/link">
+                  <Link href={`/projects/project-details/?id=${project.id}`} className="p-8 flex-grow flex flex-col relative z-20 -mt-6 bg-[#0a0414]/90 backdrop-blur-xl rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.5)] group/link">
                     <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors flex items-center justify-between">
                       {project.title}
                       <ExternalLink size={20} className="opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-primary" />

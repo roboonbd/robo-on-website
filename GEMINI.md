@@ -10,37 +10,47 @@ RoboON is a specialized engineering platform showcasing expertise in Embedded Sy
 - **Language:** TypeScript
 - **UI/Styling:** Tailwind CSS 4, Framer Motion, Lucide React
 - **Database/Auth:** Firebase (Firestore & Auth)
+- **Forms:** FormSubmit.co (Contact inquiries)
 - **Deployment:** Vercel (Next.js standard)
 
 ## 🏗 Current Architecture & Features
 
 ### Core Pages
-- [x] **Home:** Dynamic hero section and featured projects showcase.
-- [x] **Projects:** Comprehensive portfolio listing with category filtering.
-- [x] **Project Details:** Dynamic, image-rich pages for individual projects (`/projects/[id]`) featuring high-quality galleries.
-- [x] **Clients:** Showcase of trusted partners and client testimonials (`/clients`).
-- [x] **Services:** Detailed overview of engineering expertise.
-- [x] **About/Contact:** Static informational and lead-generation pages.
+- [x] **Home:** Dynamic hero section with high-quality video background, service overview, and featured projects.
+- [x] **Projects:** Comprehensive portfolio listing with dynamic category filtering and SSG support.
+- [x] **Project Details:** Dynamic, client-side rendered pages (`/projects/project-details/?id=...`) to ensure compatibility with static hosting (GitHub Pages) for newly added projects.
+- [x] **Clients:** Partner showcase with client testimonials and industry categorizations.
+- [x] **Services:** Detailed breakdown of engineering expertise (Embedded, Robotics, PCB, 3D, App/Web, IoT).
+- [x] **About:** Company mission and high-level statistics.
+- [x] **Contact:** Lead generation via a functional inquiry form integrated with `formsubmit.co`.
 
-### Administration
-- [x] **Admin Dashboard:** `/admin` - Centrally manage projects and system access.
+### Administration (`/admin`)
+- [x] **Admin Dashboard:** Overview of system stats and quick access to management tools.
 - [x] **Project Management:** 
-  - [x] Multi-image upload support (URLs).
-  - [x] Status tracking (Active/Completed).
-  - [x] Category assignment and descriptions.
-- [x] **User Management:** Control administrative access.
+  - [x] CRUD operations for projects.
+  - [x] **Category Management:** Create, edit, and delete project categories dynamically.
+  - [x] **Image Handling:** Multi-image support with client-side canvas compression for optimized storage.
+  - [x] **Tracking:** Assign customer emails to projects for future private tracking.
+- [x] **User Management:** 
+  - [x] Monitor registered customers and administrators.
+  - [x] Role-based access control (Admin, Moderator, Customer).
+  - [x] Real-time role updates.
+
+### Authentication & Security
+- [x] **Firebase Auth:** Secure login for administrators and customers.
+- [x] **Role Protection:** Protected routes (`ProtectedRoute.tsx`) and logic based on email whitelisting (`ADMIN_EMAILS`) and Firestore-stored roles.
 
 ## 📋 Development Conventions
 1. **Portfolio Focus:** All new features should prioritize the visual presentation of engineering work.
-2. **Project Data:** Projects now use an `images: string[]` array for multi-photo galleries.
-3. **Styling:** Maintain the "Futuristic/Circuit" aesthetic using Tailwind 4 and Framer Motion.
-4. **Performance:** Prioritize image optimization for high-resolution project showcases.
+2. **Project Data:** Projects use an `images: string[]` array. Prefer canvas-compressed images to keep Firestore payload lean.
+3. **Styling:** Maintain the "Futuristic/Circuit" aesthetic using Tailwind 4, glassmorphism, and Framer Motion animations.
+4. **Performance:** Core pages use SSG for speed, while project details use client-side fetching to ensure immediate availability of newly uploaded products on static hosting.
 
 ## 🗺 Roadmap & Next Steps
-- [ ] **Client Project Tracking:** (Optional) Add a secure area for clients to view project milestones.
-- [ ] **Dynamic Services:** Allow editing service descriptions and icons from the admin panel.
+- [ ] **Real-time Stats:** Implement actual Firestore aggregations for the admin dashboard stats.
+- [ ] **Client Dashboard:** Expand the project tracking feature into a dedicated client portal.
 - [ ] **Blog/Insights:** Add a section for engineering case studies and technical articles.
-- [ ] **Inquiry System:** Direct lead management in the admin panel for project requests.
+- [ ] **Multi-language Support:** Add support for multiple languages to reach a broader audience.
 
 ---
 *Last Updated: May 28, 2026*

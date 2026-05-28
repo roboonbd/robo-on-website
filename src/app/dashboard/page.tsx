@@ -148,7 +148,7 @@ export default function Dashboard() {
                         <div className="p-6">
                           <h3 className="text-xl font-bold text-white mb-2">{p.title}</h3>
                           <p className="text-sm text-gray-400 line-clamp-2 mb-4">{p.description}</p>
-                          <Link href={`/projects/${p.id}`} className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                          <Link href={`/projects/project-details/?id=${p.id}`} className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
                             View Live Details <ExternalLink size={12} />
                           </Link>
                         </div>
