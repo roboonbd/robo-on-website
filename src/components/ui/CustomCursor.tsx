@@ -11,8 +11,8 @@ export default function CustomCursor() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth springs for lag effect
-  const springConfig = { damping: 25, stiffness: 150 };
+  // Ultra-snappy springs for minimal latency
+  const springConfig = { damping: 30, stiffness: 1000 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
@@ -91,7 +91,7 @@ export default function CustomCursor() {
           translateY: "-50%",
           scale: isHovering ? 2 : 1,
         }}
-        transition={{ type: "spring", damping: 30, stiffness: 200 }}
+        transition={{ type: "spring", damping: 35, stiffness: 400 }}
       />
     </div>
   );
