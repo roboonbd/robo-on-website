@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 
-const NeonTrain = ({ path, duration = 6, delay = 0, size = 0.6 }: { path: string; duration?: number; delay?: number; size?: number }) => (
+const NeonTrain = ({ path, duration = 8, delay = 0, size = 0.9 }: { path: string; duration?: number; delay?: number; size?: number }) => (
   <g>
     {/* Massive Bloom Aura */}
     <motion.path
@@ -15,14 +15,14 @@ const NeonTrain = ({ path, duration = 6, delay = 0, size = 0.6 }: { path: string
       filter="url(#massive-bloom-tranquil)"
       initial={{ pathLength: size, pathOffset: -size, opacity: 0 }}
       animate={{ 
-        pathOffset: [0, 1 + size],
-        opacity: [0, 0.4, 0.4, 0]
+        pathOffset: [-size, 1],
+        opacity: [0, 0.5, 0.5, 0]
       }}
       transition={{
         duration: duration,
         repeat: Infinity,
         delay: delay,
-        ease: "easeInOut",
+        ease: "linear",
       }}
     />
     {/* Pure Neon Core */}
@@ -30,19 +30,19 @@ const NeonTrain = ({ path, duration = 6, delay = 0, size = 0.6 }: { path: string
       d={path}
       fill="none"
       stroke="var(--color-primary)"
-      strokeWidth="3"
+      strokeWidth="3.5"
       strokeLinecap="round"
       filter="url(#neon-glow-core-tranquil)"
       initial={{ pathLength: size, pathOffset: -size, opacity: 0 }}
       animate={{ 
-        pathOffset: [0, 1 + size],
+        pathOffset: [-size, 1],
         opacity: [0, 1, 1, 0]
       }}
       transition={{
         duration: duration,
         repeat: Infinity,
         delay: delay,
-        ease: "easeInOut",
+        ease: "linear",
       }}
     />
   </g>
@@ -68,26 +68,24 @@ const CircuitBackground = memo(() => {
             <feGaussianBlur stdDeviation="12" result="blur" />
           </filter>
 
+          {/* Grid traces - barely visible grid only */}
           <pattern id="grid-traces" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse">
-             <path d="M 0 150 L 100 150 L 150 200 L 150 300 L 200 350 L 400 350" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.08" />
+             <path d="M 0 150 L 100 150 L 150 200" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.05" />
           </pattern>
         </defs>
 
         <rect width="100%" height="100%" fill="url(#grid-traces)" className="text-primary" />
         
-        {/* Fewer, longer energy streaks */}
-        <g className="text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+        {/* Ultra-Long, Precise Energy Streaks */}
+        <g className="text-primary" fill="none" stroke="currentColor" strokeWidth="3">
           {/* Streak 1: Main Diagonal */}
-          <path d="M -100 200 L 300 200 L 600 500 L 600 900" opacity="0.03" />
-          <NeonTrain path="M -100 200 L 300 200 L 600 500 L 600 900" duration={12} size={0.7} />
+          <NeonTrain path="M -100 200 L 300 200 L 600 500 L 600 900" duration={12} size={0.9} />
           
           {/* Streak 2: Long Horizontal */}
-          <path d="M 1600 300 L 1000 300 L 800 500 L -200 500" opacity="0.03" />
-          <NeonTrain path="M 1600 300 L 1000 300 L 800 500 L -200 500" duration={15} delay={5} size={0.65} />
+          <NeonTrain path="M 1600 300 L 1000 300 L 800 500 L -200 500" duration={15} delay={4} size={0.85} />
 
           {/* Streak 3: Top edge sweep */}
-          <path d="M 1200 -100 L 1200 150 L 1450 400" opacity="0.03" />
-          <NeonTrain path="M 1200 -100 L 1200 150 L 1450 400" duration={10} delay={8} size={0.8} />
+          <NeonTrain path="M 1200 -100 L 1200 150 L 1450 400" duration={10} delay={8} size={0.95} />
         </g>
       </svg>
     </div>
