@@ -141,7 +141,7 @@ export default function Home() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center z-10"
         >
-          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl">
             <video
               id="hero-video"
               ref={videoRef}
