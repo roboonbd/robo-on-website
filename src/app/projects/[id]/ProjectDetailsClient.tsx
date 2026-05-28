@@ -36,6 +36,8 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
               src={project.images[activeImageIndex]}
               alt={project.title}
               className="w-full h-full object-cover relative z-0"
+              loading="eager"
+              fetchPriority="high"
             />
           ) : (
             <div className="w-full h-full bg-gray-900 flex items-center justify-center">

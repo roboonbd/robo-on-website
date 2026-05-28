@@ -30,8 +30,15 @@ export default function Dashboard() {
       try {
         setLoading(true);
         
-        // 1. Fetch User Profile Details
-        const userDoc = await getDoc(doc(db, "users", user.uid));
+        // Parallelize fetching User Profile and Assigned Projects
+        const [userDoc, projectSnap] = await Promise.all([
+          getDoc(doc(db, "users", user.uid)),
+          getDocs(query(
+            collection(db, "projects"), 
+            where("customerEmail", "==", user.email?.toLowerCase())
+          ))
+        ]);
+
         if (userDoc.exists()) {
           const data = userDoc.data();
           setFirstName(data.firstName || "");
@@ -40,12 +47,6 @@ export default function Dashboard() {
           setAddress(data.address || "");
         }
 
-        // 2. Fetch Assigned Projects
-        const q = query(
-          collection(db, "projects"), 
-          where("customerEmail", "==", user.email?.toLowerCase())
-        );
-        const projectSnap = await getDocs(q);
         const projectData = projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setProjects(projectData);
 

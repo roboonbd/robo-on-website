@@ -51,8 +51,12 @@ export default function AdminProjects() {
     try {
       setLoading(true);
       
-      // Fetch Categories
-      const catSnap = await getDocs(collection(db, "categories"));
+      // Parallelize fetching Categories and Projects
+      const [catSnap, projectSnap] = await Promise.all([
+        getDocs(collection(db, "categories")),
+        getDocs(query(collection(db, "projects"), orderBy("createdAt", "desc")))
+      ]);
+
       let catData = catSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Category[];
       
       // Default categories if none exist
@@ -66,9 +70,6 @@ export default function AdminProjects() {
       setCategories(catData);
       if (!category && catData.length > 0) setCategory(catData[0].name);
 
-      // Fetch Projects
-      const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-      const projectSnap = await getDocs(q);
       const data = projectSnap.docs.map(doc => {
         const d = doc.data();
         const images = d.images || (d.image ? [d.image] : []);

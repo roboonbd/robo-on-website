@@ -18,14 +18,15 @@ export default function Projects() {
       try {
         setLoading(true);
         
-        // Fetch Categories from DB
-        const catSnap = await getDocs(collection(db, "categories"));
+        // Parallelize fetching Categories and Projects
+        const [catSnap, querySnapshot] = await Promise.all([
+          getDocs(collection(db, "categories")),
+          getDocs(query(collection(db, "projects"), orderBy("createdAt", "desc")))
+        ]);
+
         const catData = catSnap.docs.map(doc => doc.data().name);
         setCategories(["All", ...catData]);
 
-        // Fetch Projects
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
         const projectsData = querySnapshot.docs.map(doc => {
           const d = doc.data();
           const images = d.images || (d.image ? [d.image] : []);
@@ -115,6 +116,7 @@ export default function Projects() {
                       src={project.images?.[0] || "https://www.transparenttextures.com/patterns/cubes.png"} 
                       alt={project.title} 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-75 group-hover:brightness-100" 
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0414] to-transparent z-0 opacity-80" />
                     
