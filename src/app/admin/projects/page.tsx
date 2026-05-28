@@ -374,7 +374,7 @@ export default function AdminProjects() {
             <div key={p.id} className="glass-card rounded-2xl border border-white/5 relative group overflow-hidden flex flex-col hover:border-primary/30 transition-all">
               <div className="h-44 bg-gray-900 relative">
                 <img src={p.images?.[0] || "https://www.transparenttextures.com/patterns/cubes.png"} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-4 right-4 flex gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                   <button onClick={() => handleEdit(p)} className="p-2 bg-black/60 backdrop-blur-md rounded-lg text-white hover:bg-primary hover:text-black transition-all"><Edit2 size={16} /></button>
                   <button onClick={async () => {if(confirm("Delete?")) {await deleteDoc(doc(db, "projects", p.id)); setProjects(projects.filter(pr => pr.id !== p.id))}}} className="p-2 bg-black/60 backdrop-blur-md rounded-lg text-white hover:bg-red-500 transition-all"><Trash2 size={16} /></button>
                 </div>
