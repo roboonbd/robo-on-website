@@ -220,10 +220,22 @@ export default function ProjectDetailsClient({ project }: { project: any }) {
                  
                  <motion.img 
                    key={activeImageIndex}
-                   initial={{ opacity: 0, y: 20 }}
-                   animate={{ opacity: 1, y: 0 }}
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.9 }}
+                   drag="x"
+                   dragConstraints={{ left: 0, right: 0 }}
+                   dragElastic={0.2}
+                   onDragEnd={(_, info) => {
+                     const swipeThreshold = 50;
+                     if (info.offset.x < -swipeThreshold) {
+                       nextImage();
+                     } else if (info.offset.x > swipeThreshold) {
+                       prevImage();
+                     }
+                   }}
                    src={project.images[activeImageIndex]} 
-                   className="w-full h-auto max-w-full shadow-[0_20px_80px_rgba(0,0,0,0.9)] rounded-2xl ring-1 ring-white/10"
+                   className="w-full h-auto max-w-full shadow-[0_20px_80px_rgba(0,0,0,0.9)] rounded-2xl ring-1 ring-white/10 cursor-grab active:cursor-grabbing touch-none"
                    onClick={(e) => e.stopPropagation()}
                  />
 
