@@ -267,20 +267,20 @@ export default function AdminProjects() {
       {isManagingCategories && (
         <div className="mb-8 p-6 glass-card rounded-3xl border border-primary/30 space-y-4">
           <h3 className="text-xl font-bold text-white">Manage Project Categories</h3>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input 
               value={newCategoryName} 
               onChange={e => setNewCategoryName(e.target.value)}
               placeholder="Category Name" 
-              className="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-primary" 
+              className="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 sm:py-2 text-white outline-none focus:border-primary" 
             />
             <button 
               onClick={editingCategory ? handleUpdateCategory : handleAddCategory}
-              className="bg-primary text-black font-bold px-6 py-2 rounded-xl hover:bg-white transition-all"
+              className="bg-primary text-black font-bold px-6 py-3 sm:py-2 rounded-xl hover:bg-white transition-all whitespace-nowrap"
             >
               {editingCategory ? "Update" : "Add Category"}
             </button>
-            {editingCategory && <button onClick={() => {setEditingCategory(null); setNewCategoryName("");}} className="p-2 text-gray-400 hover:text-white"><X /></button>}
+            {editingCategory && <button onClick={() => {setEditingCategory(null); setNewCategoryName("");}} className="p-2 text-gray-400 hover:text-white flex items-center justify-center"><X /></button>}
           </div>
           <div className="flex flex-wrap gap-2">
             {categories.map(cat => (
