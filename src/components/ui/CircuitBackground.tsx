@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 
-const NeonTrain = ({ path, duration = 8, delay = 0, size = 0.9 }: { path: string; duration?: number; delay?: number; size?: number }) => (
+const NeonTrain = ({ path, duration = 8, delay = 0, size = 0.4 }: { path: string; duration?: number; delay?: number; size?: number }) => (
   <g>
     {/* Massive Bloom Aura */}
     <motion.path
@@ -76,16 +76,16 @@ const CircuitBackground = memo(() => {
 
         <rect width="100%" height="100%" fill="url(#grid-traces)" className="text-primary" />
         
-        {/* Ultra-Long, Precise Energy Streaks */}
+        {/* Balanced Mid-Length Energy Streaks */}
         <g className="text-primary" fill="none" stroke="currentColor" strokeWidth="3">
           {/* Streak 1: Main Diagonal */}
-          <NeonTrain path="M -100 200 L 300 200 L 600 500 L 600 900" duration={12} size={0.9} />
+          <NeonTrain path="M -100 200 L 300 200 L 600 500 L 600 900" duration={12} size={0.4} />
           
           {/* Streak 2: Long Horizontal */}
-          <NeonTrain path="M 1600 300 L 1000 300 L 800 500 L -200 500" duration={15} delay={4} size={0.85} />
+          <NeonTrain path="M 1600 300 L 1000 300 L 800 500 L -200 500" duration={15} delay={4} size={0.35} />
 
           {/* Streak 3: Top edge sweep */}
-          <NeonTrain path="M 1200 -100 L 1200 150 L 1450 400" duration={10} delay={8} size={0.95} />
+          <NeonTrain path="M 1200 -100 L 1200 150 L 1450 400" duration={10} delay={8} size={0.45} />
         </g>
       </svg>
     </div>
