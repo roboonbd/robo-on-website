@@ -33,6 +33,7 @@ export const viewport = {
 };
 
 import ClientLayout from "@/components/layout/ClientLayout";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 export default function RootLayout({
   children,
@@ -45,6 +46,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col overflow-x-hidden`}
       >
         <AuthProvider>
+          <CustomCursor />
           <CircuitBackground />
           <ClientLayout>{children}</ClientLayout>
         </AuthProvider>
