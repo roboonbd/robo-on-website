@@ -12,33 +12,27 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Aggressive Play Failsafe
+  // Simple Play Trigger for Mobile
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const playVideo = async () => {
-      try {
-        if (video.paused) {
-          video.muted = true;
-          await video.play();
-        }
-      } catch (err) {
-        // Silently fail
+    const playVideo = () => {
+      if (video.paused) {
+        video.play().catch(() => {
+          // Fallback for strict mobile browsers
+        });
       }
     };
 
-    // Poll every 500ms to ensure the video stays playing (handles mobile sleep/resume)
-    const interval = setInterval(() => {
-      if (video.paused) playVideo();
-    }, 500);
-
-    // Interaction fallbacks
+    // Attempt play on interaction
     window.addEventListener('touchstart', playVideo, { once: true });
     window.addEventListener('click', playVideo, { once: true });
 
+    // Initial check
+    playVideo();
+
     return () => {
-      clearInterval(interval);
       window.removeEventListener('touchstart', playVideo);
       window.removeEventListener('click', playVideo);
     };
@@ -139,7 +133,10 @@ export default function Home() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center z-10"
         >
-          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl">
+          <div 
+            className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl"
+            style={{ clipPath: 'inset(0% 0% 14% 0%)' }}
+          >
             <video
               id="hero-video"
               ref={videoRef}
@@ -149,9 +146,11 @@ export default function Home() {
               playsInline
               // @ts-ignore
               webkit-playsinline="true"
+              disablePictureInPicture
+              disableRemotePlayback
               preload="auto"
               className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
-              style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
+              style={{ minHeight: '200px', willChange: 'transform' }}
             >
               <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
               Your browser does not support the video tag.
