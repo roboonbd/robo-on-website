@@ -133,28 +133,27 @@ export default function Home() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center z-10"
         >
-          <div 
-            className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl"
-            style={{ clipPath: 'inset(0% 0% 14% 0%)' }}
-          >
-            <video
-              id="hero-video"
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              // @ts-ignore
-              webkit-playsinline="true"
-              disablePictureInPicture
-              disableRemotePlayback
-              preload="auto"
-              className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
-              style={{ minHeight: '200px', willChange: 'transform' }}
-            >
-              <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl overflow-hidden">
+            <div 
+              className="w-full h-auto"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  <video
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    webkit-playsinline
+                    preload="auto"
+                    class="w-full h-auto object-contain origin-center pointer-events-none"
+                    style="min-height: 200px; filter: drop-shadow(0 0 15px rgba(22,163,74,0.1));"
+                  >
+                    <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                `
+              }}
+            />
           </div>
         </motion.div>
       </section>
