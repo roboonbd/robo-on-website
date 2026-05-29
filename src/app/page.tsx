@@ -10,39 +10,46 @@ import { collection, getDocs, query, limit, orderBy } from "firebase/firestore";
 export default function Home() {
   const [featuredProjects, setFeaturedProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Programmatic manual play trigger for mobile devices (iOS Safari Friendly)
   useEffect(() => {
-    const playVideo = async () => {
-      if (videoRef.current) {
-        try {
-          videoRef.current.muted = true;
-          await videoRef.current.play();
-        } catch (err) {
-          console.log("Autoplay blocked, waiting for interaction");
+    const video = videoRef.current;
+    if (!video) return;
+
+    const attemptPlay = async () => {
+      try {
+        if (video.paused) {
+          video.muted = true;
+          await video.play();
+          setVideoStarted(true);
         }
+      } catch (err) {
+        console.log("Autoplay blocked or failed, waiting for interaction");
       }
     };
 
-    // Try playing immediately and with a slight delay
-    playVideo();
-    const timeout = setTimeout(playVideo, 1000);
+    // Lazy load the source to prevent initial hanging
+    const source = video.querySelector('source');
+    if (source && !source.src) {
+      source.src = "/robo-on-website/hero-video.mp4";
+      video.load();
+    }
 
-    // Fallback for strict iOS logic: play on first user interaction
-    const handleGesture = () => {
-      playVideo();
-      window.removeEventListener('touchstart', handleGesture);
-      window.removeEventListener('click', handleGesture);
-    };
-
-    window.addEventListener('touchstart', handleGesture);
-    window.addEventListener('click', handleGesture);
+    // Attempt play on various events
+    video.addEventListener('canplay', attemptPlay);
+    window.addEventListener('touchstart', attemptPlay, { once: true });
+    window.addEventListener('click', attemptPlay, { once: true });
+    
+    // Initial attempt after a short delay
+    const timeout = setTimeout(attemptPlay, 1000);
 
     return () => {
       clearTimeout(timeout);
-      window.removeEventListener('touchstart', handleGesture);
-      window.removeEventListener('click', handleGesture);
+      video.removeEventListener('canplay', attemptPlay);
+      window.removeEventListener('touchstart', attemptPlay);
+      window.removeEventListener('click', attemptPlay);
     };
   }, []);
 
@@ -145,24 +152,24 @@ export default function Home() {
             <video
               id="hero-video"
               ref={videoRef}
-              autoPlay
               loop
               muted
               playsInline
               // @ts-ignore
               webkit-playsinline="true"
               preload="auto"
-              onCanPlay={(e) => {
-                const video = e.currentTarget;
-                video.play().catch(err => console.log("Play on canplay failed", err));
-              }}
               poster="/robo-on-website/logo.png"
-              className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
+              className={`w-full h-auto object-contain origin-center pointer-events-none transform-gpu transition-opacity duration-1000 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}
               style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
             >
-              <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
+              <source type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            {!videoStarted && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <img src="/robo-on-website/logo.png" alt="Loading" className="h-16 w-auto opacity-50 animate-pulse" />
+              </div>
+            )}
           </div>
         </motion.div>
       </section>
