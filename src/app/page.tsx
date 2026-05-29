@@ -150,7 +150,6 @@ export default function Home() {
               // @ts-ignore
               webkit-playsinline="true"
               preload="auto"
-              poster="/robo-on-website/logo.png"
               className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
               style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
             >
