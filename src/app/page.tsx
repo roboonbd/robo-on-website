@@ -151,7 +151,8 @@ export default function Home() {
               playsInline
               // @ts-ignore
               webkit-playsinline="true"
-              preload="auto"
+              preload="metadata"
+              poster="/robo-on-website/logo.png"
               className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
               style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
             >
