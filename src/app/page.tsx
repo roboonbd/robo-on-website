@@ -141,7 +141,7 @@ export default function Home() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="flex-1 w-full max-w-xl lg:max-w-none flex justify-center z-10"
         >
-          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl">
+          <div className="w-full flex items-center justify-center lg:w-[600px] relative bg-black/20 shadow-2xl overflow-hidden">
             <video
               id="hero-video"
               ref={videoRef}
@@ -151,9 +151,14 @@ export default function Home() {
               playsInline
               // @ts-ignore
               webkit-playsinline="true"
-              preload="auto"
-              className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu"
-              style={{ clipPath: 'inset(0% 0% 14% 0%)', minHeight: '200px' }}
+              preload="metadata"
+              poster="/robo-on-website/logo.png"
+              className="w-full h-auto object-contain origin-center pointer-events-none transform-gpu scale-[1.2]"
+              style={{ 
+                clipPath: 'inset(5% 5% 18% 5%)', 
+                minHeight: '250px',
+                filter: 'drop-shadow(0 0 20px rgba(22,163,74,0.2))'
+              }}
             >
               <source src="/robo-on-website/hero-video.mp4" type="video/mp4" />
               Your browser does not support the video tag.
