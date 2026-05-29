@@ -47,7 +47,7 @@ RoboON is a specialized engineering platform showcasing expertise in Embedded Sy
 4. **Performance:** Core pages use SSG for speed, while project details use client-side fetching to ensure immediate availability of newly uploaded products on static hosting.
 
 ## 🗺 Roadmap & Next Steps
-- [ ] **Real-time Stats:** Implement actual Firestore aggregations for the admin dashboard stats.
+- [x] **Real-time Stats:** Implement actual Firestore aggregations for the admin dashboard stats.
 - [ ] **Client Dashboard:** Expand the project tracking feature into a dedicated client portal.
 - [ ] **Blog/Insights:** Add a section for engineering case studies and technical articles.
 - [ ] **Multi-language Support:** Add support for multiple languages to reach a broader audience.

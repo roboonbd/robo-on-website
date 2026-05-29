@@ -1,16 +1,69 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Users, Wrench, TrendingUp } from "lucide-react";
+import { Users, Wrench, TrendingUp, Loader2, Clock, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+
+interface Project {
+  id: string;
+  title: string;
+  status: string;
+  createdAt?: any;
+  category: string;
+}
 
 export default function AdminDashboard() {
-  const stats = [
-    { label: "Total Projects", value: "0", icon: Wrench, trend: "0", trendUp: true },
-    { label: "Completed Projects", value: "0", icon: TrendingUp, trend: "0", trendUp: true },
-    { label: "Active Projects", value: "0", icon: Wrench, trend: "0", trendUp: false },
-    { label: "Total Users", value: "0", icon: Users, trend: "0%", trendUp: true },
-  ];
+  const [stats, setStats] = useState([
+    { label: "Total Projects", value: "...", icon: Wrench, trend: "Live", trendUp: true },
+    { label: "Completed Projects", value: "...", icon: CheckCircle2, trend: "Live", trendUp: true },
+    { label: "Active Projects", value: "...", icon: Clock, trend: "Live", trendUp: false },
+    { label: "Total Users", value: "...", icon: Users, trend: "Live", trendUp: true },
+  ]);
+  const [recentProjects, setRecentProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch Projects and Users in parallel
+        const [projectSnap, userSnap] = await Promise.all([
+          getDocs(collection(db, "projects")),
+          getDocs(collection(db, "users"))
+        ]);
+
+        const projects = projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[];
+        const userCount = userSnap.size;
+
+        const totalProjects = projects.length;
+        const completedProjects = projects.filter(p => p.status === "Completed").length;
+        const activeProjects = projects.filter(p => p.status === "Active").length;
+
+        setStats([
+          { label: "Total Projects", value: totalProjects.toString(), icon: Wrench, trend: "Live", trendUp: true },
+          { label: "Completed Projects", value: completedProjects.toString(), icon: CheckCircle2, trend: "Live", trendUp: true },
+          { label: "Active Projects", value: activeProjects.toString(), icon: Clock, trend: "Live", trendUp: false },
+          { label: "Total Users", value: userCount.toString(), icon: Users, trend: "Live", trendUp: true },
+        ]);
+
+        // Get 5 most recent projects
+        const recentQuery = query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(5));
+        const recentSnap = await getDocs(recentQuery);
+        setRecentProjects(recentSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[]);
+
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
@@ -24,13 +77,13 @@ export default function AdminDashboard() {
             transition={{ delay: index * 0.1 }}
             className="glass-card p-6 rounded-2xl border border-white/5 relative overflow-hidden group"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-10 -mt-10 transition-all transform-gpu" style={{ background: 'radial-gradient(circle, rgba(22,163,74,0.1) 0%, rgba(22,163,74,0) 70%)' }}></div>
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-10 -mt-10 transition-all transform-gpu" style={{ background: 'radial-gradient(circle, rgba(255,87,34,0.1) 0%, rgba(255,87,34,0) 70%)' }}></div>
             
             <div className="flex justify-between items-start mb-4 relative z-10">
               <div className="p-3 bg-white/5 rounded-xl border border-white/10 group-hover:border-primary/30 transition-colors">
                 <stat.icon size={20} className="text-gray-400 group-hover:text-primary transition-colors" />
               </div>
-              <span className={`text-xs font-bold px-2 py-1 rounded-md ${stat.trendUp ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+              <span className={`text-[10px] font-bold px-2 py-1 rounded-md bg-white/5 border border-white/10 text-gray-400`}>
                 {stat.trend}
               </span>
             </div>
@@ -44,16 +97,41 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4">
-        {/* Recent Activity Placeholder */}
+        {/* Recent Activity */}
         <div className="lg:col-span-2 glass-card rounded-2xl border border-white/5 p-6 md:p-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-white">Recent Projects</h2>
             <Link href="/admin/projects" className="text-sm text-primary hover:text-white transition-colors">View All →</Link>
           </div>
           
-          <div className="text-center py-20 text-gray-500">
-             <p>Project activity logs will appear here.</p>
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="animate-spin text-primary" size={32} />
+            </div>
+          ) : recentProjects.length === 0 ? (
+            <div className="text-center py-20 text-gray-500">
+               <p>No projects found. Add your first project to see it here.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {recentProjects.map((project) => (
+                <div key={project.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all group">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-2 h-2 rounded-full ${project.status === 'Completed' ? 'bg-green-500' : 'bg-primary shadow-[0_0_10px_rgba(255,87,34,0.5)]'}`}></div>
+                    <div>
+                      <h4 className="font-semibold text-white group-hover:text-primary transition-colors">{project.title}</h4>
+                      <p className="text-xs text-gray-500">{project.category}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${project.status === 'Completed' ? 'bg-green-500/10 text-green-500' : 'bg-primary/10 text-primary'}`}>
+                      {project.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Quick Actions */}
