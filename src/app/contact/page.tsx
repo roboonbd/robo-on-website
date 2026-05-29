@@ -81,7 +81,7 @@ export default function ContactPage() {
                     name="name"
                     required
                     type="text" 
-                    placeholder="John Doe"
+                    placeholder="Full Name"
                     className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder-gray-600 focus:border-primary/50 outline-none transition-all"
                   />
                 </div>
@@ -95,7 +95,7 @@ export default function ContactPage() {
                       name="email"
                       required
                       type="email" 
-                      placeholder="john@example.com"
+                      placeholder="email@email.com"
                       className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder-gray-600 focus:border-primary/50 outline-none transition-all"
                     />
                   </div>

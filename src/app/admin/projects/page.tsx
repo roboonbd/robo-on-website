@@ -319,7 +319,7 @@ export default function AdminProjects() {
               <label className="block text-xs font-bold text-gray-500 uppercase mb-2 flex items-center gap-2">
                  <UserIcon size={14} className="text-primary" /> Customer Email (Optional - for private dashboard tracking)
               </label>
-              <input value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} type="email" placeholder="customer@example.com" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none" />
+              <input value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} type="email" placeholder="customer@email.com" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none" />
             </div>
             
             <div className="md:col-span-3">

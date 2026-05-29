@@ -211,7 +211,7 @@ function LoginContent() {
                   onChange={(e) => setFirstName(e.target.value)}
                   required={!isLogin}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary/50 transition-colors placeholder:text-gray-600"
-                  placeholder="John"
+                  placeholder="First Name"
                 />
               </div>
               <div>
@@ -222,7 +222,7 @@ function LoginContent() {
                   onChange={(e) => setLastName(e.target.value)}
                   required={!isLogin}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary/50 transition-colors placeholder:text-gray-600"
-                  placeholder="Doe"
+                  placeholder="Last Name"
                 />
               </div>
             </div>
@@ -236,7 +236,7 @@ function LoginContent() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 transition-colors placeholder:text-gray-600"
-              placeholder="user@example.com"
+              placeholder="email@email.com"
             />
           </div>
 
