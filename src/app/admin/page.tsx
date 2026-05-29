@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Users, Wrench, TrendingUp, Loader2, Clock, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, limit, getCountFromServer, where } from "firebase/firestore";
 
 interface Project {
   id: string;
@@ -30,29 +30,28 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         
-        // Fetch Projects and Users in parallel
-        const [projectSnap, userSnap] = await Promise.all([
-          getDocs(collection(db, "projects")),
-          getDocs(collection(db, "users"))
+        // Use count aggregations for efficiency
+        const [
+          totalProjectsSnap,
+          completedProjectsSnap,
+          activeProjectsSnap,
+          totalUsersSnap,
+          recentSnap
+        ] = await Promise.all([
+          getCountFromServer(collection(db, "projects")),
+          getCountFromServer(query(collection(db, "projects"), where("status", "==", "Completed"))),
+          getCountFromServer(query(collection(db, "projects"), where("status", "==", "Active"))),
+          getCountFromServer(collection(db, "users")),
+          getDocs(query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(5)))
         ]);
-
-        const projects = projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[];
-        const userCount = userSnap.size;
-
-        const totalProjects = projects.length;
-        const completedProjects = projects.filter(p => p.status === "Completed").length;
-        const activeProjects = projects.filter(p => p.status === "Active").length;
 
         setStats([
-          { label: "Total Projects", value: totalProjects.toString(), icon: Wrench, trend: "Live", trendUp: true },
-          { label: "Completed Projects", value: completedProjects.toString(), icon: CheckCircle2, trend: "Live", trendUp: true },
-          { label: "Active Projects", value: activeProjects.toString(), icon: Clock, trend: "Live", trendUp: false },
-          { label: "Total Users", value: userCount.toString(), icon: Users, trend: "Live", trendUp: true },
+          { label: "Total Projects", value: totalProjectsSnap.data().count.toString(), icon: Wrench, trend: "Live", trendUp: true },
+          { label: "Completed Projects", value: completedProjectsSnap.data().count.toString(), icon: CheckCircle2, trend: "Live", trendUp: true },
+          { label: "Active Projects", value: activeProjectsSnap.data().count.toString(), icon: Clock, trend: "Live", trendUp: false },
+          { label: "Total Users", value: totalUsersSnap.data().count.toString(), icon: Users, trend: "Live", trendUp: true },
         ]);
 
-        // Get 5 most recent projects
-        const recentQuery = query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(5));
-        const recentSnap = await getDocs(recentQuery);
         setRecentProjects(recentSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[]);
 
       } catch (err) {
